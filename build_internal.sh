@@ -2,5 +2,5 @@
 
 mkdir build
 cd build
-cmake .. 
+cmake .. -DNEWLIB_TAG=fix-socket-timeout-options
 make -j4 tarball
