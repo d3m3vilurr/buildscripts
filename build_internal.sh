@@ -13,6 +13,6 @@ make -j4 tarball
 mkdir build
 cd build
 cmake ..
-make -j4 tarball
+make -j4 VERBOSE=1 tarball
       ;;
 esac
