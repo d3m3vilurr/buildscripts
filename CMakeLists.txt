@@ -478,7 +478,7 @@ ExternalProject_add(gcc-base
     URL_HASH ${GCC_HASH}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     PATCH_COMMAND patch -d <SOURCE_DIR> -p3 -t -N < ${PROJECT_SOURCE_DIR}/patches/gcc/0001-gcc-8.patch
-    CONFIGURE_COMMAND CFLAGS="${extra_cflags}" CXXFLAGS="${extra_cflags}" ${compiler_flags}
+    CONFIGURE_COMMAND CFLAGS=${extra_cflags} CXXFLAGS=${extra_cflags} ${compiler_flags}
     ${wrapper_command} <SOURCE_DIR>/configure
     --build=${build_native}
     # compile a native compiler so keep host == build
@@ -566,7 +566,7 @@ if(CMAKE_TOOLCHAIN_FILE)
         URL_HASH ${GCC_HASH}
         DOWNLOAD_DIR ${DOWNLOAD_DIR}
         PATCH_COMMAND patch -d <SOURCE_DIR> -p3 -t -N < ${PROJECT_SOURCE_DIR}/patches/gcc/0001-gcc-8.patch
-        CONFIGURE_COMMAND CFLAGS="${extra_cflags}" CXXFLAGS="${extra_cflags}" ${compiler_flags} ${toolchain_tools}
+        CONFIGURE_COMMAND CFLAGS=${extra_cflags} CXXFLAGS=${extra_cflags} ${compiler_flags} ${toolchain_tools}
         ${wrapper_command} <SOURCE_DIR>/configure
         --build=${build_native}
         # compile a native compiler so keep host == build
@@ -619,8 +619,8 @@ ExternalProject_add(gcc-final
     URL_HASH ${GCC_HASH}
     DOWNLOAD_DIR ${DOWNLOAD_DIR}
     PATCH_COMMAND patch -d <SOURCE_DIR> -p3 -t -N < ${PROJECT_SOURCE_DIR}/patches/gcc/0001-gcc-8.patch
-    CONFIGURE_COMMAND CFLAGS="${extra_cflags}"
-    CXXFLAGS="${extra_cflags}" ${compiler_flags} ${toolchain_tools} ${compiler_target_tools}
+    CONFIGURE_COMMAND CFLAGS=${extra_cflags}
+    CXXFLAGS=${extra_cflags} ${compiler_flags} ${toolchain_tools} ${compiler_target_tools}
     ${wrapper_command} <SOURCE_DIR>/configure
     --build=${build_native}
     --host=${host_native}
