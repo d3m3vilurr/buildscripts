@@ -434,11 +434,11 @@ list(APPEND pthread_tools
     )
 
 # Prevent GCC wrapping system includes in extern "C" (modern systems should define this)
-set(extra_cflags -DNO_IMPLICIT_EXTERN_C)
+set(GCC_CFLAGS "-DNO_IMPLICIT_EXTERN_C")
 
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" AND ${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
     # GCC on OSX (Clang in diguise) needs more bracket nesting depth to compile gcc
-	set(extra_cflags ${extra_cflags}\ -fbracket-depth=512)
+    set(GCC_CFLAGS "${GCC_CFLAGS} -fbracket-depth=512")
 endif()
 
 # Common gcc configure options
@@ -492,11 +492,11 @@ ExternalProject_add(gcc-base
     --with-mpc=${toolchain_build_depends_dir}
     --with-isl=${toolchain_build_depends_dir}
     --with-libelf=${toolchain_build_depends_dir}
-    --CFLAGS=${extra_cflags}
-    --CXXFLAGS=${extra_cflags}
     ${common_gcc_configure_args}
     --disable-threads
     --without-headers
+    "CFLAGS=${GCC_CFLAGS}"
+    "CXXFLAGS=${GCC_CFLAGS}"
     BUILD_COMMAND $(MAKE) all-gcc
     INSTALL_COMMAND $(MAKE) install-gcc
     )
@@ -582,11 +582,11 @@ if(CMAKE_TOOLCHAIN_FILE)
         --with-mpc=${toolchain_build_depends_dir}
         --with-isl=${toolchain_build_depends_dir}
         --with-libelf=${toolchain_build_depends_dir}
-        --CFLAGS=${extra_cflags}
-        --CXXFLAGS=${extra_cflags}
         ${common_gcc_configure_args}
         --disable-threads
         --with-headers=yes
+        "CFLAGS=${GCC_CFLAGS}"
+        "CXXFLAGS=${GCC_CFLAGS}"
         BUILD_COMMAND ${toolchain_tools} ${wrapper_command} $(MAKE) INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0"
         INSTALL_COMMAND $(MAKE) install
         )
@@ -636,11 +636,11 @@ ExternalProject_add(gcc-final
     --with-mpc=${toolchain_target_depends_dir}
     --with-isl=${toolchain_target_depends_dir}
     --with-libelf=${toolchain_target_depends_dir}
-    --CFLAGS=${extra_cflags}
-    --CXXFLAGS=${extra_cflags}
     ${common_gcc_configure_args}
     --with-headers=yes
     --enable-threads=posix
+    "CFLAGS=${GCC_CFLAGS}"
+    "CXXFLAGS=${GCC_CFLAGS}"
     BUILD_COMMAND ${toolchain_tools} ${compiler_target_tools} ${wrapper_command}
     $(MAKE) INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0"
     INSTALL_COMMAND $(MAKE) install
