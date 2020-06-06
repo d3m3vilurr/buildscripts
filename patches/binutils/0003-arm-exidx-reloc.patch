@@ -1,0 +1,41 @@
+From 9f0ef68bf3b833e481db01b22a29e6d2fbeb6456 Mon Sep 17 00:00:00 2001
+From: Sunguk Lee <d3m3vilurr@gmail.com>
+Date: Sun, 7 Jun 2020 01:31:10 +0900
+Subject: [PATCH] Revert "Correct the calculation of offsets for ARM exidx
+ relocs when performing a partial link."
+
+This reverts commit 539300fb929ada830ec7c4002fd59f0d86c823b1.
+---
+ bfd/elf32-arm.c                | 2 +-
+ ld/testsuite/ld-arm/unwind-4.d | 2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/bfd/elf32-arm.c b/bfd/elf32-arm.c
+index cb8370c39d..2d3acb4132 100644
+--- a/bfd/elf32-arm.c
++++ b/bfd/elf32-arm.c
+@@ -15829,7 +15829,7 @@ elf32_arm_update_relocs (asection *o,
+ 	  eadi = get_arm_elf_section_data (i);
+ 	  edit_list = eadi->u.exidx.unwind_edit_list;
+ 	  edit_tail = eadi->u.exidx.unwind_edit_tail;
+-	  offset = i->output_offset;
++	  offset = o->vma + i->output_offset;
+ 
+ 	  if (eadi->elf.rel.hdr &&
+ 	      eadi->elf.rel.hdr->sh_entsize == rel_hdr->sh_entsize)
+diff --git a/ld/testsuite/ld-arm/unwind-4.d b/ld/testsuite/ld-arm/unwind-4.d
+index 6bd4d91bf4..0bed0dc692 100644
+--- a/ld/testsuite/ld-arm/unwind-4.d
++++ b/ld/testsuite/ld-arm/unwind-4.d
+@@ -13,8 +13,6 @@ OFFSET   TYPE              VALUE
+ 0000000c R_ARM_PREL31      \.text
+ 00000010 R_ARM_PREL31      \.text
+ 00000010 R_ARM_NONE        __aeabi_unwind_cpp_pr0
+-00000010 R_ARM_PREL31      \.text
+-00000010 R_ARM_NONE        __aeabi_unwind_cpp_pr0
+ 00000018 R_ARM_PREL31      \.text
+ 
+ 
+-- 
+2.27.0
+
