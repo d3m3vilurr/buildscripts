@@ -13,12 +13,8 @@ matrix:
       osx_image: xcode8
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y cmake git build-essential autoconf texinfo bison flex; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y g++-mingw-w64 cmake git build-essential autoconf texinfo bison flex; fi
 addons:
-  apt:
-    packages:
-    - g++-mingw-w64
-    - cmake3
 script:
 - mkdir build
 - cd build
