@@ -18,6 +18,7 @@ addons:
 script:
 - mkdir build
 - cd build
+- x86_64-w64-mingw32-gcc -v
 - cmake .. -DCMAKE_TOOLCHAIN_FILE=toolchain-x86_64-w64-mingw32.cmake
 - cmake --build . -- vita-toolchain_build
 - cmake --build . -- vita-toolchain_host
