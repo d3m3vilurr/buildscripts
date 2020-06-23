@@ -1,0 +1,26 @@
+language: cpp
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      env: TOXENV=WIN
+      sudo: required
+    - os: linux
+      dist: trusty
+      sudo: required
+    - os: osx
+      osx_image: xcode8
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y cmake git build-essential autoconf texinfo bison flex; fi
+addons:
+  apt:
+    packages:
+    - g++-mingw-w64
+    - cmake3
+script:
+- mkdir build
+- cd build
+- cmake ..
+- cmake --build . -- vita-toolchain_build
